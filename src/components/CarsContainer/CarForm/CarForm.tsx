@@ -5,13 +5,15 @@ import {joiResolver} from "@hookform/resolvers/joi";
 import {ICar} from "../../../interfaces/car.interface";
 import {carValidator} from "../../../validators/car.validator";
 import {carService} from "../../../services/carService";
+import {ISetState} from "../../../types/ISetState.type";
 
 interface IProps {
     trigger: () => void;
     carForUpdate: ICar;
+    setCarForUpdate: ISetState<ICar>;
 }
 
-const CarForm: FC<IProps> = ({trigger, carForUpdate}) => {
+const CarForm: FC<IProps> = ({trigger, carForUpdate, setCarForUpdate}) => {
     const {handleSubmit, register, reset, setValue, formState: {isValid, errors}} = useForm<ICar>({
         mode: 'onBlur',
         resolver: joiResolver(carValidator)
@@ -34,6 +36,7 @@ const CarForm: FC<IProps> = ({trigger, carForUpdate}) => {
 
     const update: SubmitHandler<ICar> = async (car) => {
         await carService.updateById(carForUpdate.id, car);
+        setCarForUpdate(null);
         trigger();
         reset();
     };
@@ -46,7 +49,7 @@ const CarForm: FC<IProps> = ({trigger, carForUpdate}) => {
                 <input type="text" placeholder={'year'} {...register('year')}/>
                 <button disabled={!isValid}>{carForUpdate ? 'update' : 'save'}</button>
             </form>
-            <div>
+            <div style={{color: 'red'}}>
                 {errors.brand && <div>brand: {errors.brand.message}</div>}
                 {errors.price && <div>brand: {errors.price.message}</div>}
                 {errors.year && <div>brand: {errors.year.message}</div>}

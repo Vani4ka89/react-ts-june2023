@@ -15,7 +15,7 @@ const CarsPage = () => {
 
     return (
         <div>
-            <CarForm trigger={trigger} carForUpdate={carForUpdate}/>
+            <CarForm trigger={trigger} carForUpdate={carForUpdate} setCarForUpdate={setCarForUpdate}/>
             <hr/>
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start'}}>
                 <Cars flag={flag} setCarForUpdate={setCarForUpdate} trigger={trigger}/>
